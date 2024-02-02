@@ -18,10 +18,11 @@ def get_keys(challenge,keyId = 0, filename = "eth_mnemonic.txt"):
 
     w3 = Web3()
     w3.eth.default_account = wallet_address
-    eth_addr = w3.eth.account.from_key(private_key)
+    wallet_account = w3.eth.account.from_key(private_key)
+    eth_addr = wallet_account.address
 
     msg = eth_account.messages.encode_defunct(challenge)
-    sig = eth_addr.sign_message(msg, private_key)
+    sig = eth_account.Account.sign_message(msg, private_key)
 
     assert eth_account.Account.recover_message(msg,signature=sig.signature.hex()) == eth_addr, f"Failed to sign message properly"
 
